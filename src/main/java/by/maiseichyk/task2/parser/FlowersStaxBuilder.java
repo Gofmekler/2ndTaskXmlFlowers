@@ -33,7 +33,7 @@ public class FlowersStaxBuilder extends AbstractFlowerBuilder {
             reader = inputFactory.createXMLStreamReader(inputStream);
             while(reader.hasNext()){
                 int type = reader.next();
-                if (type == XMLStreamReader.START_ELEMENT){
+                if (type == XMLStreamReader.START_ELEMENT){ // FIXME: 14.03.2022 IllegalStateException
                     name = reader.getLocalName();
                     if (name.equals(FlowerXmlTag.POISONOUS_FLOWER.getValue())){
                         PoisonousFlower poisonousFlower = (PoisonousFlower) buildPoisonousFlower(reader);
