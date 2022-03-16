@@ -7,6 +7,7 @@ public class PoisonousFlower extends Flower{
     protected DangerLevel dangerLevel;
 
     public PoisonousFlower(){
+        super();
     }
 
     public PoisonousFlower(String id, String name, Soil soilType, String origin, YearMonth date, VisualParameters visualParameters, GrowingTips growingTips, Multiplying multiplyingType, DangerLevel dangerLevel){
@@ -24,9 +25,15 @@ public class PoisonousFlower extends Flower{
 
     @Override
     public String toString() {
-        return "PoisonousFlower{" +
-                "dangerLevel=" + dangerLevel +
-                '}';
+        return "PoisonousFlower{" + '\'' +
+                ", " + name + '\'' +
+                ", " + origin + '\'' +
+                ", " + soilType +
+                ", " + visualParameters +
+                ", " + multiplyingType +
+                ", " + growingTips +
+                ", " + date +
+                ", " + dangerLevel;
     }
 
     @Override

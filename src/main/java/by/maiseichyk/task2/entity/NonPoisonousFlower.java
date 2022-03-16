@@ -7,6 +7,7 @@ public class NonPoisonousFlower extends Flower{
     private DangerLevel dangerLevel;
 
     public NonPoisonousFlower(){
+        super();
     }
 
     public NonPoisonousFlower(String id, String name, Soil soilType, String origin, YearMonth date, VisualParameters visualParameters, GrowingTips growingTips, Multiplying multiplyingType, DangerLevel dangerLevel){
@@ -24,9 +25,15 @@ public class NonPoisonousFlower extends Flower{
 
     @Override
     public String toString() {
-        return "NonPoisonousFlower{" +
-                "dangerLevel=" + dangerLevel +
-                '}';
+        return "NonPoisonousFlower{" + id + '\'' +
+                ", " + name + '\'' +
+                ", " + origin + '\'' +
+                ", " + soilType +
+                ", " + visualParameters +
+                ", " + multiplyingType +
+                ", " + growingTips +
+                ", " + date +
+                ", " + dangerLevel;
     }
 
     @Override

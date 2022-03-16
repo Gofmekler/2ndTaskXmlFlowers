@@ -1,6 +1,7 @@
 package by.maiseichyk.task2.builder;
 
 import by.maiseichyk.task2.entity.Flower;
+import by.maiseichyk.task2.exception.CustomException;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -20,5 +21,5 @@ public abstract class AbstractFlowerBuilder {
         return flowers;
     }
 
-    public abstract void buildFlowersSet(String filename);
+    public abstract void buildFlowersSet(String filename) throws CustomException;
 }

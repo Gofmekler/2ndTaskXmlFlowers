@@ -15,7 +15,7 @@ import java.util.Set;
 import static by.maiseichyk.task2.handler.FlowerXmlTag.*;
 
 public class FlowerHandler extends DefaultHandler {
-    //    private static Logger logger = LogManager.getLogger();
+    private static Logger logger = LogManager.getLogger();
     private Set<Flower> flowers;
     private Flower currentFlower;
     private VisualParameters currentVisualParameters;
@@ -33,12 +33,11 @@ public class FlowerHandler extends DefaultHandler {
     }
 
     public void startElement(String uri, String localName, String qName, Attributes attrs) {
-
         if (NON_POISONOUS_FLOWER.getValue().equals(qName)) {
             currentFlower = new NonPoisonousFlower();
             currentFlower.setId(attrs.getValue(0));
             if (attrs.getLength() == 2) {
-                ((NonPoisonousFlower) currentFlower).setDangerLevel(DangerLevel.valueOf(attrs.getValue(1).toUpperCase()));
+                currentFlower.setDangerLevel(DangerLevel.valueOf(attrs.getValue(1).toUpperCase()));
             }
         }
 
@@ -46,13 +45,14 @@ public class FlowerHandler extends DefaultHandler {
             currentFlower = new PoisonousFlower();
             currentFlower.setId(attrs.getValue(0));
             if (attrs.getLength() == 2) {
-                ((PoisonousFlower) currentFlower).setDangerLevel(DangerLevel.valueOf(attrs.getValue(1).toUpperCase()));
+                currentFlower.setDangerLevel(DangerLevel.valueOf(attrs.getValue(1).toUpperCase()));
             }
         }
 
         else if (VISUAL_PARAMETERS.getValue().equals(qName)) {
             currentVisualParameters = new VisualParameters();
             currentFlower.setVisualParameters(currentVisualParameters);
+
 
         }
 
@@ -72,7 +72,6 @@ public class FlowerHandler extends DefaultHandler {
     public void endElement(String uri, String localName, String qName) {
         if (NON_POISONOUS_FLOWER.getValue().equals(qName) ) {
             flowers.add(currentFlower);
-
         }
         else if (POISONOUS_FLOWER.getValue().equals(qName)){
             flowers.add(currentFlower);
@@ -99,8 +98,7 @@ public class FlowerHandler extends DefaultHandler {
 
                 }
             } catch (CustomException exception) {
-//                logger.error(exception);
-                exception.printStackTrace();
+                logger.error(exception);
             }
         }
         currentXmlTag = null;

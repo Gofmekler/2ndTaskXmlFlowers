@@ -4,14 +4,15 @@ import java.time.YearMonth;
 import java.util.Objects;
 
 public class Flower {
-    private String id;
-    private String name;
-    private String origin;
-    private Soil soilType;
-    private VisualParameters visualParameters = new VisualParameters();
-    private Multiplying multiplyingType;
-    private GrowingTips growingTips = new GrowingTips();
-    private YearMonth date;
+    protected String id;
+    protected String name;
+    protected String origin;
+    protected Soil soilType;
+    protected VisualParameters visualParameters = new VisualParameters();
+    protected Multiplying multiplyingType;
+    protected GrowingTips growingTips = new GrowingTips();
+    protected YearMonth date;
+    protected DangerLevel dangerLevel;
 
     public Flower(){
     }
@@ -25,6 +26,18 @@ public class Flower {
         this.visualParameters = visualParameters;
         this.growingTips = growingTips;
         this.multiplyingType = multiplyingType;
+    }
+
+    public Flower(String id, String name, Soil soilType, String origin, YearMonth date, VisualParameters visualParameters, GrowingTips growingTips, Multiplying multiplyingType, DangerLevel dangerLevel) {
+        this.id = id;
+        this.name = name;
+        this.soilType = soilType;
+        this.origin = origin;
+        this.date = date;
+        this.visualParameters = visualParameters;
+        this.growingTips = growingTips;
+        this.multiplyingType = multiplyingType;
+        this.dangerLevel = dangerLevel;
     }
 
     public String getId() {
@@ -91,6 +104,14 @@ public class Flower {
         this.date = date;
     }
 
+    public DangerLevel getDangerLevel() {
+        return dangerLevel;
+    }
+
+    public void setDangerLevel(DangerLevel dangerLevel) {
+        this.dangerLevel = dangerLevel;
+    }
+
     @Override
     public String toString() {
         return "Flower{" +
@@ -102,6 +123,7 @@ public class Flower {
                 ", multiplyingType=" + multiplyingType +
                 ", growingTips=" + growingTips +
                 ", date=" + date +
+                ", dangerLevel" + dangerLevel +
                 '}';
     }
 

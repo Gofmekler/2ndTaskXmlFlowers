@@ -4,6 +4,8 @@ import by.maiseichyk.task2.builder.AbstractFlowerBuilder;
 import by.maiseichyk.task2.entity.*;
 import by.maiseichyk.task2.exception.CustomException;
 import by.maiseichyk.task2.handler.FlowerXmlTag;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
@@ -15,7 +17,11 @@ import java.time.YearMonth;
 import java.util.HashSet;
 import java.util.Set;
 
+import static by.maiseichyk.task2.handler.FlowerXmlTag.NON_POISONOUS_FLOWER;
+import static by.maiseichyk.task2.handler.FlowerXmlTag.POISONOUS_FLOWER;
+
 public class FlowersStaxBuilder extends AbstractFlowerBuilder {
+    private static Logger logger = LogManager.getLogger();
     private Set<Flower> flowers;
     private XMLInputFactory inputFactory;
     public FlowersStaxBuilder(){
@@ -29,90 +35,88 @@ public class FlowersStaxBuilder extends AbstractFlowerBuilder {
     public void buildFlowersSet(String filename) {
         XMLStreamReader reader;
         String name;
-        try(FileInputStream inputStream = new FileInputStream(filename)){
+        try (FileInputStream inputStream = new FileInputStream(filename)){
             reader = inputFactory.createXMLStreamReader(inputStream);
-            while(reader.hasNext()){
+            while (reader.hasNext()){
                 int type = reader.next();
-                if (type == XMLStreamReader.START_ELEMENT){ // FIXME: 14.03.2022 IllegalStateException
+                if (type == XMLStreamReader.START_ELEMENT){
                     name = reader.getLocalName();
-                    if (name.equals(FlowerXmlTag.POISONOUS_FLOWER.getValue())){
-                        PoisonousFlower poisonousFlower = (PoisonousFlower) buildPoisonousFlower(reader);
+                    if (POISONOUS_FLOWER.getValue().equals(name)){
+                        PoisonousFlower poisonousFlower = new PoisonousFlower();
+                        buildFlower(reader, poisonousFlower);
                         flowers.add(poisonousFlower);
                     }
-                    if (name.equals(FlowerXmlTag.NON_POISONOUS_FLOWER.getValue())){
-                        NonPoisonousFlower nonPoisonousFlower = (NonPoisonousFlower) buildNonPoisonousFlower(reader);
+                    if (NON_POISONOUS_FLOWER.getValue().equals(name)){
+                        NonPoisonousFlower nonPoisonousFlower = new NonPoisonousFlower();
+                        buildFlower(reader, nonPoisonousFlower);
                         flowers.add(nonPoisonousFlower);
                     }
                 }
             }
         } catch (XMLStreamException | IOException | CustomException exception){
-            exception.printStackTrace();//logger
+            logger.error(exception);
         }
     }
 
-    private Flower buildPoisonousFlower(XMLStreamReader reader) throws XMLStreamException, CustomException {
-        PoisonousFlower poisonousFlower = new PoisonousFlower();
-        poisonousFlower.setId(reader.getAttributeValue(null, FlowerXmlTag.ID.getValue()));
-        poisonousFlower.setDangerLevel(DangerLevel.getDangerLevelByValue(reader.getAttributeValue(null, FlowerXmlTag.DANGER_LEVEL.getValue())));
-        poisonousFlower.setName(getXMLText(reader));
-        poisonousFlower.setSoilType(Soil.getSoilTypeByValue(getXMLText(reader)));
-        poisonousFlower.setOrigin(getXMLText(reader));
-        poisonousFlower.setDate(YearMonth.parse(getXMLText(reader)));
-        poisonousFlower.setVisualParameters(buildVisualParameters(reader));
-        poisonousFlower.setGrowingTips(buildGrowingTips(reader));
-        poisonousFlower.setMultiplyingType(Multiplying.getMultiplyingTypeByValue(getXMLText(reader)));
-        return poisonousFlower;
-    }
-
-    private Flower buildNonPoisonousFlower(XMLStreamReader reader) throws XMLStreamException, CustomException {
-        NonPoisonousFlower nonPoisonousFlower = new NonPoisonousFlower();
-        nonPoisonousFlower.setId(reader.getAttributeValue(null, FlowerXmlTag.ID.getValue()));
-        nonPoisonousFlower.setDangerLevel(DangerLevel.getDangerLevelByValue(reader.getAttributeValue(null, FlowerXmlTag.DANGER_LEVEL.getValue())));
-        nonPoisonousFlower.setName(getXMLText(reader));
-        nonPoisonousFlower.setSoilType(Soil.getSoilTypeByValue(getXMLText(reader)));
-        nonPoisonousFlower.setOrigin(getXMLText(reader));
-        nonPoisonousFlower.setDate(YearMonth.parse(getXMLText(reader)));
-        nonPoisonousFlower.setVisualParameters(buildVisualParameters(reader));
-        nonPoisonousFlower.setGrowingTips(buildGrowingTips(reader));
-        nonPoisonousFlower.setMultiplyingType(Multiplying.getMultiplyingTypeByValue(getXMLText(reader)));
-        return nonPoisonousFlower;
+    private Flower buildFlower(XMLStreamReader reader, Flower currentFlower) throws CustomException, XMLStreamException {
+        String name;
+        currentFlower.setDangerLevel(DangerLevel.getDangerLevelByValue(reader.getAttributeValue(null, FlowerXmlTag.DANGER_LEVEL.getValue())));
+        currentFlower.setId(reader.getAttributeValue(null, FlowerXmlTag.ID.getValue()));
+        while (reader.hasNext()) {
+            int type = reader.next();
+            switch (type) {
+                case XMLStreamConstants.START_ELEMENT -> {
+                    name = reader.getLocalName().replace("-", "_").toUpperCase();
+                    switch (FlowerXmlTag.valueOf(name)) {
+                        case NAME -> currentFlower.setName(getXMLText(reader));
+                        case SOIL -> currentFlower.setSoilType(Soil.getSoilTypeByValue(getXMLText(reader)));
+                        case ORIGIN -> currentFlower.setOrigin(getXMLText(reader));
+                        case PLANT_DISCOVERY_DATE -> currentFlower.setDate(YearMonth.parse(getXMLText(reader)));
+                        case VISUAL_PARAMETERS -> currentFlower.setVisualParameters(buildVisualParameters(reader));
+                        case GROWING_TIPS -> currentFlower.setGrowingTips(buildGrowingTips(reader));
+                        case MULTIPLYING -> currentFlower.setMultiplyingType(Multiplying.getMultiplyingTypeByValue(getXMLText(reader)));
+                    }
+                }
+                case XMLStreamConstants.END_ELEMENT -> {
+                    name = reader.getLocalName().replace("-", "_");//replace todo
+                    if (FlowerXmlTag.valueOf(name.toUpperCase()) == NON_POISONOUS_FLOWER
+                            || FlowerXmlTag.valueOf(name.toUpperCase()) == POISONOUS_FLOWER) {
+                        return currentFlower;
+                    }
+                }
+            }
+        }
+        throw new XMLStreamException();
     }
 
     private VisualParameters buildVisualParameters(XMLStreamReader reader) throws XMLStreamException, CustomException {
-        VisualParameters visualDescription = new VisualParameters();
+        VisualParameters visualParameters = new VisualParameters();
         FlowerXmlTag tag;
         String name;
         while (reader.hasNext()) {
             int type = reader.next();
             switch (type) {
                 case XMLStreamConstants.START_ELEMENT -> {
-                    name = reader.getLocalName();
+                    name = reader.getLocalName().toUpperCase().replace("-", "_");
                     tag = FlowerXmlTag.valueOf(name.toUpperCase());
                     switch (tag) {
-                        case STEM_COLOUR -> visualDescription.setStemColour(Colour.getColourByValue(getXMLText(reader)));
-                        case LEAF_COLOUR -> visualDescription.setLeafColour(Colour.getColourByValue(getXMLText(reader)));
-                        case AVERAGE_PLANT_SIZE -> visualDescription.setAverageSize(Integer.parseInt(getXMLText(reader)));
+                        case STEM_COLOUR -> visualParameters.setStemColour(Colour.getColourByValue(getXMLText(reader)));
+                        case LEAF_COLOUR -> visualParameters.setLeafColour(Colour.getColourByValue(getXMLText(reader)));
+                        case AVERAGE_PLANT_SIZE -> visualParameters.setAverageSize(Integer.parseInt(getXMLText(reader)));
                     }
                 }
                 case XMLStreamConstants.END_ELEMENT -> {
                     name = reader.getLocalName();
-                    tag = FlowerXmlTag.valueOf(name.toUpperCase());
+                    tag = FlowerXmlTag.valueOf(name.toUpperCase().replace("-", "_"));
                     if (tag == FlowerXmlTag.VISUAL_PARAMETERS) {
-                        return visualDescription;
+                        return visualParameters;
                     }
                 }
             }
         }
         throw new CustomException("Illegal visual");
     }
-    private String getXMLText(XMLStreamReader reader) throws XMLStreamException {
-        String text = null;
-        if (reader.hasNext()) {
-            reader.next();
-            text = reader.getText();
-        }
-        return text;
-    }
+
     private GrowingTips buildGrowingTips(XMLStreamReader reader) throws XMLStreamException, CustomException {
         GrowingTips growingTips = new GrowingTips();
         FlowerXmlTag tag;
@@ -122,7 +126,7 @@ public class FlowersStaxBuilder extends AbstractFlowerBuilder {
             switch (type) {
                 case XMLStreamConstants.START_ELEMENT -> {
                     name = reader.getLocalName();
-                    tag = FlowerXmlTag.valueOf(name.toUpperCase());
+                    tag = FlowerXmlTag.valueOf(name.toUpperCase().replace("-", "_"));
                     switch (tag) {
                         case WEEKLY_WATERING -> growingTips.setWeeklyWatering(Integer.parseInt(getXMLText(reader)));
                         case TEMPERATURE -> growingTips.setTemperature(Integer.parseInt(getXMLText(reader)));
@@ -131,13 +135,23 @@ public class FlowersStaxBuilder extends AbstractFlowerBuilder {
                 }
                 case XMLStreamConstants.END_ELEMENT -> {
                     name = reader.getLocalName();
-                    tag = FlowerXmlTag.valueOf(name.toUpperCase());
+                    tag = FlowerXmlTag.valueOf(name.toUpperCase().replace("-", "_"));
                     if (tag == FlowerXmlTag.GROWING_TIPS) {
                         return growingTips;
+
                     }
                 }
             }
         }
         throw new CustomException("Illegal");
+    }
+
+    private String getXMLText(XMLStreamReader reader) throws XMLStreamException {
+        String text = null;
+        if (reader.hasNext()) {
+            reader.next();
+            text = reader.getText();
+        }
+        return text;
     }
 }

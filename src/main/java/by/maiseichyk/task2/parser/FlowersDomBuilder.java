@@ -3,6 +3,8 @@ package by.maiseichyk.task2.parser;
 import by.maiseichyk.task2.builder.AbstractFlowerBuilder;
 import by.maiseichyk.task2.entity.*;
 import by.maiseichyk.task2.exception.CustomException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -19,6 +21,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class FlowersDomBuilder extends AbstractFlowerBuilder{
+    private static Logger logger = LogManager.getLogger();
     private Set<Flower> flowers;
     private DocumentBuilder documentBuilder;
     public FlowersDomBuilder(){
@@ -35,7 +38,7 @@ public class FlowersDomBuilder extends AbstractFlowerBuilder{
     }
 
     public void buildFlowersSet(String filename) {
-        Document document = null;
+        Document document;
         try{
             document = documentBuilder.parse(filename);
             Element root = document.getDocumentElement();
@@ -53,9 +56,8 @@ public class FlowersDomBuilder extends AbstractFlowerBuilder{
             }
         }
         catch (SAXException | IOException | CustomException exception){
-            exception.printStackTrace();//logger
+            logger.error(exception);
         }
-
     }
 
     private PoisonousFlower buildPoisonousFlower(Element poisonousFlowerElement) throws CustomException {
@@ -78,7 +80,7 @@ public class FlowersDomBuilder extends AbstractFlowerBuilder{
         Element visualParametersElement = (Element) nonPoisonousFlowerElement.getElementsByTagName("visual-parameters").item(0);
         Element growingTipsElement = (Element) nonPoisonousFlowerElement.getElementsByTagName("growing-tips").item(0);
         NonPoisonousFlower nonPoisonousFlower = new NonPoisonousFlower();
-        nonPoisonousFlower.setId(nonPoisonousFlowerElement.getAttribute("id"));// FIXME: 13.03.2022 NullPointerException
+        nonPoisonousFlower.setId(nonPoisonousFlowerElement.getAttribute("id"));
         nonPoisonousFlower.setDangerLevel(DangerLevel.getDangerLevelByValue(nonPoisonousFlowerElement.getAttribute("danger-level")));
         nonPoisonousFlower.setName(getElementTextContent(nonPoisonousFlowerElement, "name"));
         nonPoisonousFlower.setSoilType(Soil.getSoilTypeByValue(getElementTextContent(nonPoisonousFlowerElement, "soil")));
