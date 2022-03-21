@@ -1,6 +1,5 @@
 package by.maiseichyk.task2.validator;
 
-import by.maiseichyk.task2.exception.CustomException;
 import org.xml.sax.SAXException;
 import java.io.*;
 import org.apache.logging.log4j.LogManager;
@@ -15,10 +14,8 @@ import javax.xml.validation.Validator;
 public class CustomXmlValidator {
     private static Logger logger = LogManager.getLogger();
 
-    public boolean validate() {
+    public boolean validate(String fileName, String schemaName) {
         String language = XMLConstants.W3C_XML_SCHEMA_NS_URI;
-        String fileName = "flowers.xml";
-        String schemaName = "flowers2.xsd";
         SchemaFactory factory = SchemaFactory.newInstance(language);
         File schemaLocation = new File(schemaName);
         try {
@@ -27,7 +24,7 @@ public class CustomXmlValidator {
             Source source = new StreamSource(fileName);
             validator.validate(source);
         } catch (SAXException | IOException e) {
-            logger.error(fileName + " is not correct or valid");
+            logger.error(fileName + " doesnt match the scheme"+ schemaName);
             return false;
         }
         return true;

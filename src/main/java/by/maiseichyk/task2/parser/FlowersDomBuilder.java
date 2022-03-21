@@ -3,12 +3,13 @@ package by.maiseichyk.task2.parser;
 import by.maiseichyk.task2.builder.AbstractFlowerBuilder;
 import by.maiseichyk.task2.entity.*;
 import by.maiseichyk.task2.exception.CustomException;
+import by.maiseichyk.task2.validator.CustomXmlValidator;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
 import  org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
@@ -37,26 +38,32 @@ public class FlowersDomBuilder extends AbstractFlowerBuilder{
         return flowers;
     }
 
-    public void buildFlowersSet(String filename) {
+    public void buildFlowersSet(String filename, String schemaName) throws CustomException {
         Document document;
-        try{
-            document = documentBuilder.parse(filename);
-            Element root = document.getDocumentElement();
-            NodeList poisonousFlowersList = root.getElementsByTagName("poisonous-flower");
-            for (int i = 0; i < poisonousFlowersList.getLength(); i++) {
-                Element poisonousFlowerElement = (Element) poisonousFlowersList.item(i);
-                Flower poisonousFlower = buildPoisonousFlower(poisonousFlowerElement);
-                flowers.add(poisonousFlower);
-            }
-            NodeList nonPoisonousFlowersList = root.getElementsByTagName("non-poisonous-flower");
-            for (int i = 0; i < nonPoisonousFlowersList.getLength(); i++) {
-                Element nonPoisonousFlowerElement = (Element) nonPoisonousFlowersList.item(i);
-                Flower nonPoisonousFlower = buildNonPoisonousFlower(nonPoisonousFlowerElement);
-                flowers.add(nonPoisonousFlower);
+        CustomXmlValidator validator = new CustomXmlValidator();
+        if(validator.validate(filename, schemaName)) {
+            try {
+                document = documentBuilder.parse(filename);
+                Element root = document.getDocumentElement();
+                NodeList poisonousFlowersList = root.getElementsByTagName("poisonous-flower");
+                for (int i = 0; i < poisonousFlowersList.getLength(); i++) {
+                    Element poisonousFlowerElement = (Element) poisonousFlowersList.item(i);
+                    Flower poisonousFlower = buildPoisonousFlower(poisonousFlowerElement);
+                    flowers.add(poisonousFlower);
+                }
+                NodeList nonPoisonousFlowersList = root.getElementsByTagName("non-poisonous-flower");
+                for (int i = 0; i < nonPoisonousFlowersList.getLength(); i++) {
+                    Element nonPoisonousFlowerElement = (Element) nonPoisonousFlowersList.item(i);
+                    Flower nonPoisonousFlower = buildNonPoisonousFlower(nonPoisonousFlowerElement);
+                    flowers.add(nonPoisonousFlower);
+                }
+            } catch (SAXException | IOException | CustomException exception) {
+                logger.error(exception);
             }
         }
-        catch (SAXException | IOException | CustomException exception){
-            logger.error(exception);
+        else {
+            logger.info(filename + " does not match schema " + schemaName);
+            throw new CustomException(filename + "does not match schema " + schemaName);
         }
     }
 

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<flowers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="flowers2.xsd">
+<flowers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://www.example.com/flowers"
+         xsi:schemaLocation="http://www.example.com/flowers flowers3.xsd">
 
-    <non-poisonous-flower id="a123546" danger-level="none">
+    <non-poisonous-flower id="123546" danger-level="none">
         <name>Takka</name>
         <soil>slightly acidic soil</soil>
         <origin>Africa</origin>
@@ -19,7 +21,7 @@
         <multiplying>cuttings</multiplying>
     </non-poisonous-flower>
 
-    <non-poisonous-flower id="b254869" danger-level="none">
+    <non-poisonous-flower id="254869" danger-level="none">
         <name>Tillandsia</name>
         <soil>acidic soil</soil>
         <origin>Mexico</origin>
@@ -37,7 +39,7 @@
         <multiplying>seeds</multiplying>
     </non-poisonous-flower>
 
-    <poisonous-flower id="c325469" danger-level="low" >
+    <poisonous-flower id="325469" danger-level="low" >
         <name>Euphorbia</name>
         <soil>neutral soil</soil>
         <origin>Madagascar</origin>
@@ -55,7 +57,7 @@
         <multiplying>cuttings</multiplying>
     </poisonous-flower>
 
-    <non-poisonous-flower id="d426587" danger-level="none">
+    <non-poisonous-flower id="426587" danger-level="none">
         <name>Hypocyrta</name>
         <soil>slightly acidic soil</soil>
         <origin>Brazil</origin>
@@ -73,7 +75,7 @@
         <multiplying>seeds</multiplying>
     </non-poisonous-flower>
 
-    <non-poisonous-flower id="e559875" danger-level="none">
+    <non-poisonous-flower id="559875" danger-level="none">
         <name>Calathea</name>
         <soil>neutral soil</soil>
         <origin>Africa</origin>
@@ -91,7 +93,7 @@
         <multiplying>cuttings</multiplying>
     </non-poisonous-flower>
 
-    <non-poisonous-flower id="f659875" danger-level="none">
+    <non-poisonous-flower id="659875" danger-level="none">
         <name>Oxalis</name>
         <soil>acidic soil</soil>
         <origin>Mexico</origin>
@@ -109,7 +111,7 @@
         <multiplying>seeds</multiplying>
     </non-poisonous-flower>
 
-    <poisonous-flower id="g786875" danger-level="high" >
+    <poisonous-flower id="786875" danger-level="high" >
         <name>Caladium</name>
         <soil>acidic soil</soil>
         <origin>India</origin>
@@ -127,7 +129,7 @@
         <multiplying>cuttings</multiplying>
     </poisonous-flower>
 
-    <non-poisonous-flower id="h852369" danger-level="none">
+    <non-poisonous-flower id="852369" danger-level="none">
         <name>Cyperus</name>
         <soil>slightly acidic soil</soil>
         <origin>Madagascar</origin>
@@ -145,7 +147,7 @@
         <multiplying>seeds</multiplying>
     </non-poisonous-flower>
 
-    <non-poisonous-flower id="i987536" danger-level="none">
+    <non-poisonous-flower id="987536" danger-level="none">
         <name>Adromiscus</name>
         <soil>neutral soil</soil>
         <origin>Africa</origin>
@@ -163,7 +165,7 @@
         <multiplying>cuttings</multiplying>
     </non-poisonous-flower>
 
-    <non-poisonous-flower id="j105869" danger-level="none">
+    <non-poisonous-flower id="105869" danger-level="none">
         <name>Brighamia</name>
         <soil>neutral soil</soil>
         <origin>Hawaii</origin>
@@ -181,7 +183,7 @@
         <multiplying>seeds</multiplying>
     </non-poisonous-flower>
 
-    <non-poisonous-flower id="k115896" danger-level="none">
+    <non-poisonous-flower id="115896" danger-level="none">
         <name>Loquat</name>
         <soil>neutral soil</soil>
         <origin>China</origin>
@@ -199,7 +201,7 @@
         <multiplying>cuttings</multiplying>
     </non-poisonous-flower>
 
-    <non-poisonous-flower id="l123546" danger-level="none">
+    <non-poisonous-flower id="123546" danger-level="none">
         <name>Rhododendron</name>
         <soil>acidic soil</soil>
         <origin>Japan</origin>
@@ -217,7 +219,7 @@
         <multiplying>cuttings</multiplying>
     </non-poisonous-flower>
 
-    <non-poisonous-flower id="m132569" danger-level="none">
+    <non-poisonous-flower id="132569" danger-level="none">
         <name>Lobelia</name>
         <soil>acidic soil</soil>
         <origin>Africa</origin>
@@ -235,12 +237,13 @@
         <multiplying>seeds</multiplying>
     </non-poisonous-flower>
 
-    <non-poisonous-flower id="n145369" danger-level="none">
+    <non-poisonous-flower id="145369" danger-level="none">
         <name>Opuntia</name>
         <soil>neutral soil</soil>
         <origin>Mexico</origin>
         <plant-discovery-date>1570-04</plant-discovery-date>
         <visual-parameters>
+            <stem-colour>green</stem-colour>
             <leaf-colour>light green</leaf-colour>
             <average-plant-size>20</average-plant-size>
         </visual-parameters>
@@ -252,7 +255,7 @@
         <multiplying>cuttings</multiplying>
     </non-poisonous-flower>
 
-    <non-poisonous-flower id="o159876" danger-level="none">
+    <non-poisonous-flower id="159876" danger-level="none">
         <name>Crassula</name>
         <soil>neutral soil</soil>
         <origin>Chili</origin>
@@ -270,7 +273,7 @@
         <multiplying>cuttings</multiplying>
     </non-poisonous-flower>
 
-    <non-poisonous-flower id="p162435" danger-level="none">
+    <non-poisonous-flower id="162435" danger-level="none">
         <name>Schlumbergera</name>
         <soil>acidic soil</soil>
         <origin>Brazil</origin>

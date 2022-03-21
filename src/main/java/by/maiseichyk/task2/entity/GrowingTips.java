@@ -12,10 +12,10 @@ public class GrowingTips {
     public GrowingTips(){
     }
 
-    public GrowingTips(int temperature, boolean lightRequiring, int weeklyWatering) {
+    public GrowingTips(int temperature,  int weeklyWatering, boolean lightRequiring) {
         this.temperature = temperature;
-        this.lightRequiring = lightRequiring;
         this.weeklyWatering = weeklyWatering;
+        this.lightRequiring = lightRequiring;
     }
 
     public int getTemperature() {
@@ -26,16 +26,8 @@ public class GrowingTips {
         this.temperature = temperature;
     }
 
-    public boolean isLightRequiring() {
-        return lightRequiring;
-    }
-
     public void setLightRequiring(boolean lightRequiring) {
         this.lightRequiring = lightRequiring;
-    }
-
-    public int getWeeklyWatering() {
-        return weeklyWatering;
     }
 
     public void setWeeklyWatering(int weeklyWatering) throws CustomException {

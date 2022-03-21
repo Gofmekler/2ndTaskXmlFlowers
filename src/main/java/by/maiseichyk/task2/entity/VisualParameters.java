@@ -18,25 +18,16 @@ public class VisualParameters {
         this.averageSize = averageSize;
     }
 
-    public Colour getLeafColour() {
-        return leafColour;
-    }
 
     public void setLeafColour(Colour leafColour) {
         this.leafColour = leafColour;
     }
 
-    public Colour getStemColour() {
-        return stemColour;
-    }
 
     public void setStemColour(Colour stemColour) {
         this.stemColour = stemColour;
     }
 
-    public int getAverageSize() {
-        return averageSize;
-    }
 
     public void setAverageSize(int averageSize) throws CustomException{
         if(averageSize < 0){

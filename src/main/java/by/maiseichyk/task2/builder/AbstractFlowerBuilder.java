@@ -21,5 +21,5 @@ public abstract class AbstractFlowerBuilder {
         return flowers;
     }
 
-    public abstract void buildFlowersSet(String filename) throws CustomException;
+    public abstract void buildFlowersSet(String filename, String schemaName) throws CustomException;
 }

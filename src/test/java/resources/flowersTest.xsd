@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://www.example.com/flowersTest"
+        xmlns:tns="http://www.example.com/flowersTest"
+        elementFormDefault="qualified">
+
+    <element name="flowers">
+        <complexType>
+            <sequence>
+                <element  ref="tns:flower" maxOccurs="unbounded"/>
+            </sequence>
+        </complexType>
+    </element>
+
+    <element name="flower" type="tns:Abstract-flower" abstract="true"/>
+
+    <element name="poisonous-flower" type="tns:poisonous" substitutionGroup="tns:flower"/>
+
+    <element name="non-poisonous-flower" type="tns:non-poisonous" substitutionGroup="tns:flower"/>
+
+    <complexType name="Abstract-flower">
+        <sequence>
+            <element name="name" type="string"/>
+            <element name="soil" type="tns:Soil"/>
+            <element name="origin" type="string"/>
+            <element name="plant-discovery-date" type="gYearMonth"/>
+            <element name="visual-parameters" type="tns:Visual-parameters"/>
+            <element name="growing-tips" type="tns:Growing-tips"/>
+            <element name="multiplying" type="tns:Multiplying"/>
+        </sequence>
+        <attribute name="id" use="required" type="tns:Id-flower"/>
+    </complexType>
+
+    <complexType name="poisonous">
+        <complexContent>
+            <extension base="tns:Abstract-flower">
+                <attribute name="danger-level" type="tns:Danger-level" use="required"/>
+            </extension>
+        </complexContent>
+    </complexType>
+
+    <complexType name="non-poisonous">
+        <complexContent>
+            <extension base="tns:Abstract-flower">
+                <attribute name="danger-level" type="tns:Danger-level"/>
+            </extension>
+        </complexContent>
+    </complexType>
+
+    <simpleType name="Plant-discovery-date">
+        <restriction base="gYearMonth">
+            <pattern value="[0-9][0-9][0-9][0-9]-(0[1-9])|(1[0-2])"/>
+        </restriction>
+    </simpleType>
+
+    <complexType name="Visual-parameters">
+        <all>
+            <element name="leaf-colour" type="tns:Colour" />
+            <element name="stem-colour" type="tns:Colour" />
+            <element name="average-plant-size" type="nonNegativeInteger" default="50"/>
+        </all>
+    </complexType>
+
+    <complexType name="Growing-tips">
+        <all>
+            <element name="temperature" type="int" default="20" />
+            <element name="light-requiring" type="boolean" default="false" />
+            <element name="weekly-watering" default="300">
+                <simpleType>
+                    <restriction base="nonNegativeInteger">
+                        <minInclusive value="0"/>
+                        <maxInclusive value="1000"/>
+                    </restriction>
+                </simpleType>
+            </element>
+        </all>
+    </complexType>
+
+    <simpleType name="Colour">
+        <restriction base="string">
+            <enumeration value="red"/>
+            <enumeration value="light red"/>
+            <enumeration value="dark green"/>
+            <enumeration value="green"/>
+            <enumeration value="light green"/>
+            <enumeration value="pink"/>
+            <enumeration value="brown"/>
+            <enumeration value="red-green"/>
+            <enumeration value="blue"/>
+            <enumeration value="white"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="Multiplying">
+        <restriction base="string">
+            <enumeration value="cuttings"/>
+            <enumeration value="seeds"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="Soil">
+        <restriction base="string">
+            <enumeration value="acidic soil"/>
+            <enumeration value="neutral soil"/>
+            <enumeration value="slightly acidic soil"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="Id-flower">
+        <restriction base="string">
+            <pattern value="\d*"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="Danger-level">
+        <restriction base="string">
+            <enumeration value="none"/>
+            <enumeration value="low"/>
+            <enumeration value="high"/>
+        </restriction>
+    </simpleType>
+</schema>

@@ -1,0 +1,22 @@
+<flowers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://www.example.com/flowersTest"
+         xsi:schemaLocation="http://www.example.com/flowersTest flowersTest.xsd">
+
+    <non-poisonous-flower id="123123" danger-level="none">
+        <name>Rose</name>
+        <soil>acidic soil</soil>
+        <origin>India</origin>
+        <plant-discovery-date>2022-02</plant-discovery-date>
+        <visual-parameters>
+            <stem-colour>dark green</stem-colour>
+            <leaf-colour>green</leaf-colour>
+            <average-plant-size>70</average-plant-size>
+        </visual-parameters>
+        <growing-tips>
+            <temperature>20</temperature>
+            <weekly-watering>700</weekly-watering>
+            <light-requiring>true</light-requiring>
+        </growing-tips>
+        <multiplying>seeds</multiplying>
+    </non-poisonous-flower>
+</flowers>

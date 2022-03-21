@@ -15,18 +15,13 @@ public class PoisonousFlower extends Flower{
         this.dangerLevel = dangerLevel;
     }
 
-    public DangerLevel getDangerLevel() {
-        return dangerLevel;
-    }
-
     public void setDangerLevel(DangerLevel dangerLevel) {
         this.dangerLevel = dangerLevel;
     }
 
     @Override
     public String toString() {
-        return "PoisonousFlower{" + '\'' +
-                ", " + name + '\'' +
+        return "PoisonousFlower{" + id + '\''+ ", " + name + '\'' +
                 ", " + origin + '\'' +
                 ", " + soilType +
                 ", " + visualParameters +

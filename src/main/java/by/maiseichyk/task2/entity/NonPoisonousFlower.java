@@ -15,10 +15,6 @@ public class NonPoisonousFlower extends Flower{
         this.dangerLevel = dangerLevel;
     }
 
-    public DangerLevel getDangerLevel() {
-        return dangerLevel;
-    }
-
     public void setDangerLevel(DangerLevel dangerLevel) {
         this.dangerLevel = dangerLevel;
     }
@@ -49,7 +45,6 @@ public class NonPoisonousFlower extends Flower{
     public int hashCode() {
         return Objects.hash(super.hashCode(), dangerLevel);
     }
-
 }
 
 

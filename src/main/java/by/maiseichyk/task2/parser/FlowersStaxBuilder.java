@@ -4,6 +4,8 @@ import by.maiseichyk.task2.builder.AbstractFlowerBuilder;
 import by.maiseichyk.task2.entity.*;
 import by.maiseichyk.task2.exception.CustomException;
 import by.maiseichyk.task2.handler.FlowerXmlTag;
+import by.maiseichyk.task2.validator.CustomXmlValidator;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -32,36 +34,45 @@ public class FlowersStaxBuilder extends AbstractFlowerBuilder {
         return flowers;
     }
     @Override
-    public void buildFlowersSet(String filename) {
+    public void buildFlowersSet(String filename, String schemaName) throws CustomException {
         XMLStreamReader reader;
         String name;
-        try (FileInputStream inputStream = new FileInputStream(filename)){
-            reader = inputFactory.createXMLStreamReader(inputStream);
-            while (reader.hasNext()){
-                int type = reader.next();
-                if (type == XMLStreamReader.START_ELEMENT){
-                    name = reader.getLocalName();
-                    if (POISONOUS_FLOWER.getValue().equals(name)){
-                        PoisonousFlower poisonousFlower = new PoisonousFlower();
-                        buildFlower(reader, poisonousFlower);
-                        flowers.add(poisonousFlower);
-                    }
-                    if (NON_POISONOUS_FLOWER.getValue().equals(name)){
-                        NonPoisonousFlower nonPoisonousFlower = new NonPoisonousFlower();
-                        buildFlower(reader, nonPoisonousFlower);
-                        flowers.add(nonPoisonousFlower);
+        CustomXmlValidator validator = new CustomXmlValidator();
+        if(validator.validate(filename, schemaName)) {
+            try (FileInputStream inputStream = new FileInputStream(filename)) {
+                reader = inputFactory.createXMLStreamReader(inputStream);
+                while (reader.hasNext()) {
+                    int type = reader.next();
+                    if (type == XMLStreamReader.START_ELEMENT) {
+                        name = reader.getLocalName();
+                        if (POISONOUS_FLOWER.getValue().equals(name)) {
+                            PoisonousFlower poisonousFlower = new PoisonousFlower();
+                            buildFlower(reader, poisonousFlower);
+                            flowers.add(poisonousFlower);
+                        }
+                        if (NON_POISONOUS_FLOWER.getValue().equals(name)) {
+                            NonPoisonousFlower nonPoisonousFlower = new NonPoisonousFlower();
+                            buildFlower(reader, nonPoisonousFlower);
+                            flowers.add(nonPoisonousFlower);
+                        }
                     }
                 }
+            } catch (XMLStreamException | IOException | CustomException exception) {
+                logger.error(exception);
             }
-        } catch (XMLStreamException | IOException | CustomException exception){
-            logger.error(exception);
+        }
+        else {
+            logger.info(filename + " does not match schema " + schemaName);
+            throw new CustomException(filename + "does not match schema " + schemaName);
         }
     }
 
     private Flower buildFlower(XMLStreamReader reader, Flower currentFlower) throws CustomException, XMLStreamException {
         String name;
-        currentFlower.setDangerLevel(DangerLevel.getDangerLevelByValue(reader.getAttributeValue(null, FlowerXmlTag.DANGER_LEVEL.getValue())));
         currentFlower.setId(reader.getAttributeValue(null, FlowerXmlTag.ID.getValue()));
+        if (reader.getAttributeCount() == 2){
+            currentFlower.setDangerLevel(DangerLevel.getDangerLevelByValue(reader.getAttributeValue(null, FlowerXmlTag.DANGER_LEVEL.getValue())));
+        }
         while (reader.hasNext()) {
             int type = reader.next();
             switch (type) {
@@ -138,7 +149,6 @@ public class FlowersStaxBuilder extends AbstractFlowerBuilder {
                     tag = FlowerXmlTag.valueOf(name.toUpperCase().replace("-", "_"));
                     if (tag == FlowerXmlTag.GROWING_TIPS) {
                         return growingTips;
-
                     }
                 }
             }

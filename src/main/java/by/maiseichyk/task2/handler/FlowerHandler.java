@@ -35,9 +35,9 @@ public class FlowerHandler extends DefaultHandler {
     public void startElement(String uri, String localName, String qName, Attributes attrs) {
         if (NON_POISONOUS_FLOWER.getValue().equals(qName)) {
             currentFlower = new NonPoisonousFlower();
-            currentFlower.setId(attrs.getValue(0));
+            currentFlower.setId(attrs.getValue("id"));
             if (attrs.getLength() == 2) {
-                currentFlower.setDangerLevel(DangerLevel.valueOf(attrs.getValue(1).toUpperCase()));
+                currentFlower.setDangerLevel(DangerLevel.valueOf(attrs.getValue("danger-level").toUpperCase()));
             }
         }
 
@@ -52,8 +52,6 @@ public class FlowerHandler extends DefaultHandler {
         else if (VISUAL_PARAMETERS.getValue().equals(qName)) {
             currentVisualParameters = new VisualParameters();
             currentFlower.setVisualParameters(currentVisualParameters);
-
-
         }
 
         else if (GROWING_TIPS.getValue().equals(qName)) {

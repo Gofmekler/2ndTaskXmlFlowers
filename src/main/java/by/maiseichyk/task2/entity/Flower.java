@@ -28,18 +28,6 @@ public class Flower {
         this.multiplyingType = multiplyingType;
     }
 
-    public Flower(String id, String name, Soil soilType, String origin, YearMonth date, VisualParameters visualParameters, GrowingTips growingTips, Multiplying multiplyingType, DangerLevel dangerLevel) {
-        this.id = id;
-        this.name = name;
-        this.soilType = soilType;
-        this.origin = origin;
-        this.date = date;
-        this.visualParameters = visualParameters;
-        this.growingTips = growingTips;
-        this.multiplyingType = multiplyingType;
-        this.dangerLevel = dangerLevel;
-    }
-
     public String getId() {
         return id;
     }
@@ -64,49 +52,26 @@ public class Flower {
         this.origin = origin;
     }
 
-    public Soil getSoilType() {
-        return soilType;
-    }
-
     public void setSoilType(Soil soilType) {
         this.soilType = soilType;
-    }
-
-    public VisualParameters getVisualParameters() {
-        return visualParameters;
     }
 
     public void setVisualParameters(VisualParameters visualParameters) {
         this.visualParameters = visualParameters;
     }
 
-    public Multiplying getMultiplyingType() {
-        return multiplyingType;
-    }
-
     public void setMultiplyingType(Multiplying multiplyingType) {
         this.multiplyingType = multiplyingType;
-    }
-
-    public GrowingTips getGrowingTips() {
-        return growingTips;
     }
 
     public void setGrowingTips(GrowingTips growingTips) {
         this.growingTips = growingTips;
     }
 
-    public YearMonth getDate() {
-        return date;
-    }
-
     public void setDate(YearMonth date) {
         this.date = date;
     }
 
-    public DangerLevel getDangerLevel() {
-        return dangerLevel;
-    }
 
     public void setDangerLevel(DangerLevel dangerLevel) {
         this.dangerLevel = dangerLevel;
